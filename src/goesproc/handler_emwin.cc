@@ -50,10 +50,12 @@ void EMWINHandler::handle(std::shared_ptr<const lrit::File> f) {
   if (nlh.noaaSpecificCompression == 10) {
     try {
       auto zip = Zip(f->getData());
-      fb.filename = zip.fileName();
+      fb.filename = removeSuffix(zip.fileName());
+      auto ext = getSuffix(zip.fileName());
+
 
       // Use filename and extension straight from ZIP file
-      const auto path = fb.build("{filename}");
+      const auto path = fb.build(config_.filename, ext);
       fileWriter_->write(path, zip.read());
       if (config_.json) {
         fileWriter_->writeHeader(*f, path);
@@ -69,7 +71,7 @@ void EMWINHandler::handle(std::shared_ptr<const lrit::File> f) {
     fb.filename = removeSuffix(text);
 
     // Compressed TXT files also use the uppercase TXT extension
-    const auto path = fb.build("{filename}", "TXT");
+    const auto path = fb.build(config_.filename, "TXT");
     fileWriter_->write(path, f->read());
     if (config_.json) {
       fileWriter_->writeHeader(*f, path);
