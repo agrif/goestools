@@ -24,6 +24,7 @@ bool goesrParseTextTime(const std::string& name, struct timespec& time) {
   const char* buf = name.c_str() + pos + 1;
   const char* format = "%y%j_%H%M%S";
   struct tm tm;
+  memset(&tm, 0, sizeof(tm));
   auto ptr = strptime(buf, format, &tm);
 
   // strptime was successful if it returned a pointer to the next char

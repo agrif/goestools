@@ -22,6 +22,7 @@ namespace {
 bool goesnParseTime(const std::string& in, struct timespec* ts) {
   const char* buf = in.c_str();
   struct tm tm;
+  memset(&tm, 0, sizeof(tm));
 
   // For example: 2018/079/00:00:18
   char* pos = strptime(buf, "%Y/%j/%H:%M:%S", &tm);

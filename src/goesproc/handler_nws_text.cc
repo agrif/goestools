@@ -56,6 +56,7 @@ void NWSTextHandler::handle(std::shared_ptr<const lrit::File> f) {
     const char* buf = text.c_str();
     const char* format = "%Y%m%d%H%M%S";
     struct tm tm;
+    memset(&tm, 0, sizeof(tm));
     auto ptr = strptime(buf, format, &tm);
 
     // Only use time if strptime was successful
