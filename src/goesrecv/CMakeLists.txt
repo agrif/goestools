@@ -24,6 +24,10 @@ if(NOT RTLSDR_FOUND)
   message(WARNING "Unable to find librtlsdr")
 else()
   add_library(rtlsdr_source rtlsdr_source.cc)
+  # some rtlsdr versions begin with an extraneous 'v', remove it
+  if(RTLSDR_VERSION MATCHES "^v")
+    string(SUBSTRING ${RTLSDR_VERSION} 1 -1 RTLSDR_VERSION)
+  endif()
   if((RTLSDR_VERSION VERSION_EQUAL 0.5.4) OR
      (RTLSDR_VERSION VERSION_GREATER 0.5.4))
     target_compile_definitions(rtlsdr_source PRIVATE RTLSDR_HAS_BIAS_TEE)
